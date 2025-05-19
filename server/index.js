@@ -48,11 +48,18 @@ app.get('/api/files', async (req, res) => {
 // Create folder
 app.post('/api/create-folder', async (req, res) => {
     const { path: relativePath, name } = req.body;
-    const fullPath = path.join(ROOT, relativePath, name);
-    const newRelativePath = path.relative(ROOT, fullPath);
+    const prevPath = path.join(ROOT, relativePath);
+    let fullPath = path.join(ROOT, relativePath, name);
     if(existsSync(fullPath)){
         return res.status(400).json({ error: 'Folder already exists' });
     }
+
+    const stat = await fs.stat(prevPath);
+    if(stat.isFile()){
+        fullPath =path.join(path.dirname(prevPath),name);
+    }
+    const newRelativePath = path.relative(ROOT, fullPath);
+
     try {
         await fs.mkdir(fullPath);
         res.json({ statue: 'success' , data: { relativePath: newRelativePath, message: 'Folder created' }});
@@ -64,11 +71,18 @@ app.post('/api/create-folder', async (req, res) => {
 // Create file
 app.post('/api/create-file', async (req, res) => {
     const { path: relativePath, name, content } = req.body;
-    const fullPath = path.join(ROOT, relativePath, name);
-    const newRelativePath = path.relative(ROOT, fullPath);
+    const prevPath = path.join(ROOT, relativePath);
+    let fullPath = path.join(ROOT, relativePath, name);
+    
     if(existsSync(fullPath)){
         return res.status(400).json({ error: 'File already exists' });
     }
+    const stat = await fs.stat(prevPath);
+    if(stat.isFile()){
+        fullPath =path.join(path.dirname(prevPath),name);
+    }
+    const newRelativePath = path.relative(ROOT, fullPath);
+
     try {
         await fs.writeFile(fullPath, content || '');
         res.json({ message: 'File created', data: { relativePath: newRelativePath } });
