@@ -13,7 +13,7 @@ export const FileOperationProvider = ({ children }) => {
 
     async function getAllFiles() {
         try {
-            const data = await fetch(`http://localhost:4000/api/files`);
+            const data = await fetch(`https://file-explorer-86xp.onrender.com/api/files`);
             const result = await data.json();
             if(result.data){
                 setFileTree(result.data);   
@@ -33,7 +33,7 @@ export const FileOperationProvider = ({ children }) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:4000/api/read-file?path=${encodeURIComponent(filePath)}`);
+            const response = await fetch(`https://file-explorer-86xp.onrender.com/api/read-file?path=${encodeURIComponent(filePath)}`);
             const result = await response.json();
 
             if (result.data) {
@@ -53,7 +53,7 @@ export const FileOperationProvider = ({ children }) => {
     async function handleFileSave() {
         if (!activeFile?.path) return;
         try {
-            const response = await fetch("http://localhost:4000/api/update-file", {
+            const response = await fetch("https://file-explorer-86xp.onrender.com/api/update-file", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -85,7 +85,7 @@ export const FileOperationProvider = ({ children }) => {
             path: selectedPath,
             name
         };
-        const data = await fetch("http://localhost:4000/api/create-" + type, {
+        const data = await fetch("https://file-explorer-86xp.onrender.com/api/create-" + type, {
             method: "POST",
             headers: header,
             body: JSON.stringify(body)
@@ -104,7 +104,7 @@ export const FileOperationProvider = ({ children }) => {
         const newName = prompt(contextFile.name);
         if(newName){
             try {
-                const data = await fetch("http://localhost:4000/api/rename", {
+                const data = await fetch("https://file-explorer-86xp.onrender.com/api/rename", {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -124,7 +124,7 @@ export const FileOperationProvider = ({ children }) => {
 
     async function handleMoveFile(oldPath, newPath){
         try {
-            const data = await fetch("http://localhost:4000/api/move", {
+            const data = await fetch("https://file-explorer-86xp.onrender.com/api/move", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -144,7 +144,7 @@ export const FileOperationProvider = ({ children }) => {
 
     async function handleDeleteFile() {
         try {
-            const data = await fetch("http://localhost:4000/api/delete", {
+            const data = await fetch("https://file-explorer-86xp.onrender.com/api/delete", {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
