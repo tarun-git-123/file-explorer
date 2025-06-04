@@ -1,6 +1,6 @@
 import React from "react";
 import CodeEditor from "./components/CodeEditor";
-import Sidebar from "./components/sidebar";
+import Sidebar from "./components/Sidebar";
 
 function App() {
     return (
